@@ -1,6 +1,7 @@
 const express = require('express');
 const cors=require('cors')
 require('dotenv').config()
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const port=process.env.PORT||5000
 const app=express()
@@ -9,6 +10,21 @@ const app=express()
 //middleware
 app.use(cors());
 app.use(express.json());
+
+
+
+// connection to mongodb
+
+
+const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.jrrqp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+client.connect(err => {
+  const collection = client.db("allfruitsCollection").collection("allfruits");
+
+  console.log('connection too allfruitsCollection ')
+  // perform actions on the collection object
+});
+
 
 
 
