@@ -9,6 +9,8 @@ const app=express()
 
 
 
+
+// running server on browser
 app.get('/', (req, res) =>{
     res.send('fruits-hub server is running and waiting for data')
 });
