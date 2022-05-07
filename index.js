@@ -39,6 +39,7 @@ const run = async () => {
       .collection("allfruitsbanner");
     console.log(`connection too allfruitsCollection`);
 
+    // get banner data
     app.get("/banner", async (req, res) => {
       const query = {};
       const cursor = fruitsbannerCollection.find(query);
@@ -46,6 +47,15 @@ const run = async () => {
       const banners = await cursor.toArray();
 
       res.send(banners);
+    });
+
+    // post inventory data
+
+    app.post(`/inventory`, async (req, res) => {
+      const newInventory = req.body;
+      const result = await fruitsCollection.insertOne(newInventory);
+
+      res.send(result);
     });
 
     app.post("/products", (req, res) => {});
