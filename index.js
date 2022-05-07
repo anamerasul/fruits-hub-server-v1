@@ -34,9 +34,23 @@ const run = async () => {
     const fruitsCollection = client
       .db("allfruitsCollection")
       .collection("allfruits");
-
+    const fruitsbannerCollection = client
+      .db("allfruitsCollection")
+      .collection("allfruitsbanner");
     console.log(`connection too allfruitsCollection`);
+
+    app.get("/banner", async (req, res) => {
+      const query = {};
+      const cursor = fruitsbannerCollection.find(query);
+
+      const banners = await cursor.toArray();
+
+      res.send(banners);
+    });
+
+    app.post("/products", (req, res) => {});
   } finally {
+    //
   }
 };
 
