@@ -71,6 +71,15 @@ const run = async () => {
       res.send(banners);
     });
 
+    // get invebtory data
+
+    app.get("/inventory", async (req, res) => {
+      const query = {};
+      const cursor = fruitsCollection.find(query);
+
+      const services = await cursor.toArray();
+      res.send(services);
+    });
     // post inventory data
 
     app.post(`/inventory`, async (req, res) => {
