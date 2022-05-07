@@ -39,6 +39,26 @@ const run = async () => {
       .collection("allfruitsbanner");
     console.log(`connection too allfruitsCollection`);
 
+    // jwt token in login
+
+    // app.post("/login", (req, res) => {
+    //   const email = req.body;
+    //   // const user = req.body
+
+    //   // crypto.randomBytes(64).toString('hex')
+
+    //   const accessToken = jwt.sign(
+    //     email,
+    //     process.env.NODE_ACCESS_JWT_TOKEN_SECRET,
+    //     {
+    //       expiresIn: "1d",
+    //     }
+    //   );
+    //   res.send({ accessToken });
+
+    //   console.log(accessToken);
+    // });
+
     // get banner data
     app.get("/banner", async (req, res) => {
       const query = {};
@@ -72,5 +92,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("John is running on  port", port);
+  console.log("fruitsHub is running on  port", port);
 });
