@@ -75,9 +75,26 @@ const run = async () => {
 
     app.post(`/inventory`, async (req, res) => {
       const newInventory = req.body;
-      const result = await fruitsCollection.insertOne(newInventory);
+      const Jwttokeninfo = req.headers.authorization;
+      const [email, accessToken] = Jwttokeninfo.split(" ");
+      console.log(email);
+      const decoded = verifyJwtToken(accessToken, process.env.ACCESS_TOKEN);
+      console.log(decoded);
 
-      res.send(result);
+      // const decoded = verifyToken(accessToken);
+
+      console.log(decoded, decoded.email);
+
+      if (email === decoded.email) {
+        const result = await fruitsCollection.insertOne(newInventory);
+        res.send({ success: "Product Upload TO INventory successfully" });
+        res.send(result);
+      } else {
+        res.send({ success: "UnAuthoraized Access" });
+      }
+      // const result = await productCollection.insertOne(product);
+
+      // res.send(result);
     });
 
     app.post("/products", (req, res) => {});
@@ -87,6 +104,26 @@ const run = async () => {
 };
 
 run().catch(console.dir);
+
+const verifyJwtToken = (token) => {
+  let email;
+
+  jwt.verify(
+    token,
+    process.env.NODE_ACCESS_JWT_TOKEN_SECRET,
+    function (err, decoded) {
+      if (err) {
+        email = "invalid";
+      }
+
+      if (decoded) {
+        console.log(decoded);
+        email = decoded;
+      }
+    }
+  );
+  return email;
+};
 
 // running server on browser
 app.get("/", (req, res) => {
