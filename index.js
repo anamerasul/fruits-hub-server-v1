@@ -77,8 +77,21 @@ const run = async () => {
       const query = {};
       const cursor = fruitsCollection.find(query);
 
-      const services = await cursor.toArray();
-      res.send(services);
+      const items = await cursor.toArray();
+      res.send(items);
+    });
+
+    app.get("/inventory/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+
+      const item = await fruitsCollection.findOne(query);
+      res.send(item);
+    });
+
+    app.get("/inventory-count", async (req, res) => {
+      const count = await fruitsCollection.estimatedDocumentCount();
+      res.send({ count });
     });
     // post inventory data
 
@@ -97,7 +110,7 @@ const run = async () => {
       if (email === decoded.email) {
         const result = await fruitsCollection.insertOne(newInventory);
         res.send({ success: "Product Upload TO INventory successfully" });
-        res.send(result);
+        // res.send(result);
       } else {
         res.send({ success: "UnAuthoraized Access" });
       }
