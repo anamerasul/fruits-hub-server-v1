@@ -20,14 +20,8 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-// client.connect(err => {
-//   const collection = client.db("allfruitsCollection").collection("allfruits");
 
-//   console.log('connection too allfruitsCollection ')
-//   // perform actions on the collection object
-// });
-
-// async function for mongodb
+//api  routes
 
 const run = async () => {
   try {
@@ -173,9 +167,6 @@ const run = async () => {
 
       const items = await cursor.toArray();
       res.send(items);
-      // } else {
-      //   res.send({ success: "UnAuthoraized Access" });
-      // }
     });
 
     // get order spefic user
@@ -196,13 +187,6 @@ const run = async () => {
         res.send({ success: "UnAuthoraized Access" });
       }
     });
-    // app.get("/allorders:/id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: ObjectId(id) };
-
-    //   const item = await orderCollection.findOne(query);
-    //   res.send(item);
-    // });
 
     app.get("/allorders/:id", async (req, res) => {
       const id = req.params.id;
@@ -230,30 +214,7 @@ const run = async () => {
       }
     });
 
-    // app.get("/all/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: ObjectId(id) };
-
-    //   const item = await orderCollection.findOne(query);
-    //   res.send(item);
-    // });
-
-    // app.get("/orders/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: ObjectId(id) };
-
-    //   const item = await orderCollection.findOne(query);
-    //   res.send(item);
-    // });
     app.post("/orders", async (req, res) => {
-      // // const orderInfo = req.body;
-      // console.log(orderInfo);
-      // const result = await orderCollection.insertOne(orderInfo);
-      // res.send({ success: "Product Upload Successfully" });
-      // } else {
-      //   res.send({ success: "UnAuthoraized Access" });
-      // }
-
       const orderInfo = req.body;
       const Jwttokeninfo = req.headers.authorization;
       const [email, accessToken] = Jwttokeninfo.split(" ");
@@ -261,16 +222,12 @@ const run = async () => {
       const decoded = verifyJwtToken(accessToken, process.env.ACCESS_TOKEN);
       console.log(decoded);
 
-      // const decoded = verifyToken(accessToken);
-
       console.log(decoded, decoded.email);
 
       if (email === decoded.email) {
         const result = await orderCollection.insertOne(orderInfo);
         res.send({ success: "Product ADD TO USER successfully" });
-        // res.send(result);
       } else {
-        // res.send({ success: "UnAuthoraized Access" });
         res.status(403).send({ message: "forbidden access" });
       }
     });
